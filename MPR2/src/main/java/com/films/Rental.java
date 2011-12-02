@@ -12,6 +12,7 @@ import com.events.FilmListener;
 import com.exceptions.EndOfShelfException;
 import com.exceptions.FilmNotFoundException;
 import com.exceptions.LocationIsNullException;
+import com.services.FilmDBManager;
 import com.statuses.FilmStatus;
 
 
@@ -143,6 +144,10 @@ public class Rental implements FilmListener{
 		shelf.clearAll();
 		shelf.show();
 		
+		Film film = new Film("Chinatown", "Roman Polański", 1974);
+		
+		FilmDBManager filmDBManager = new FilmDBManager();
+		filmDBManager.addFilm(film);
 
 	}
 

@@ -10,9 +10,12 @@ public class Film {
 	private int year;
 	private FilmStatus status;
 
+	public Film(String title, String director, int year) {
 
-	public Film() {
-
+		this.title = title;
+		this.director = director;
+		this.year = year;
+		
 	}
 
 	public Film(String title, String director, int year, FilmStatus status) {
