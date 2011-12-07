@@ -1,4 +1,4 @@
-package com.exceptions;
+package com.project.exceptions;
 
 public class YearNotFoundException extends Exception {
 

@@ -1,4 +1,4 @@
-package com.statuses;
+package com.project.statuses;
 
 public enum FilmStatus {
 	

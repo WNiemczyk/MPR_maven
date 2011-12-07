@@ -3,8 +3,8 @@ package com.services;
 import java.sql.*;
 import java.util.*;
 
-import com.films.Film;
-import com.statuses.FilmStatus;
+import com.project.films.Film;
+import com.project.statuses.FilmStatus;
 
 public class FilmDBManager {
 
@@ -50,6 +50,7 @@ public class FilmDBManager {
 	}
 
 	public void addFilm(Film film) {
+		
 		try {
 			addFilmStatement.setString(1, film.getTitle());
 			addFilmStatement.setString(2, film.getDirector());
@@ -90,8 +91,11 @@ public class FilmDBManager {
 	public void deleteAllFilms() {
 		
 		try {
+			
 			deleteFilmStatement.executeUpdate();
-		} catch (SQLException e) {
+		} 
+		
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}

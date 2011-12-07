@@ -1,6 +1,6 @@
-package com.films;
-import com.exceptions.YearNotFoundException;
-import com.statuses.FilmStatus;
+package com.project.films;
+import com.project.exceptions.YearNotFoundException;
+import com.project.statuses.FilmStatus;
 
 
 public class Film {

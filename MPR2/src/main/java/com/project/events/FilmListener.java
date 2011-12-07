@@ -1,4 +1,4 @@
-package com.events;
+package com.project.events;
 
 public interface FilmListener {
 

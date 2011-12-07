@@ -1,4 +1,4 @@
-package com.films;
+package com.project.films;
 
 public class Location {
 

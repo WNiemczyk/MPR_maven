@@ -11,9 +11,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.exceptions.*;
-import com.films.*;
-import com.statuses.FilmStatus;
+import com.project.exceptions.*;
+import com.project.films.*;
+import com.project.statuses.FilmStatus;
 
 
 
