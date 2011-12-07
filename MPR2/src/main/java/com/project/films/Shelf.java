@@ -205,8 +205,6 @@ public class Shelf {
 		for (Film f : films) {
 			put(f);
 		}
-		
-
 	}
 
 	public void putInLocation(Location l, Film f)

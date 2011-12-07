@@ -144,11 +144,22 @@ public class Rental implements FilmListener{
 		shelf.clearAll();
 		shelf.show();
 		
-		Film film = new Film("Chinatown", "Roman Polański", 1974);
-		
+		List<Film> films = new ArrayList<Film>();
+		films.add(new Film("Chinatown", "Roman Polański", 1974, FilmStatus.Available));
+		films.add(new Film("Taxi Driver", "Martin Scorsese", 1976, FilmStatus.Available));
+		films.add(new Film("Snatch", "Guy Ritchie", 2000, FilmStatus.Available));
+		films.add(new Film("Nóż w wodzie", "Roman Polański", 1961, FilmStatus.Available));
+	
 		FilmDBManager filmDBManager = new FilmDBManager();
-		filmDBManager.addFilm(film);
+		filmDBManager.addFilms(films);
+	
+		
+		//filmDBManager.getIdFilmByTitle("Chinatown");
 
+		
+		
+		
+		
 	}
 
 

@@ -5,21 +5,15 @@ import com.project.statuses.FilmStatus;
 
 public class Film {
 
+	private long id;
+	
 	private String title;
 	private String director;
 	private int year;
 	private FilmStatus status;
 
-	public Film(String title, String director, int year) {
-
-		this.title = title;
-		this.director = director;
-		this.year = year;
-		
-	}
-
 	public Film(String title, String director, int year, FilmStatus status) {
-
+		
 		this.title = title;
 		this.director = director;
 		this.year = year;
@@ -35,8 +29,16 @@ public class Film {
 	public String toString() {
 
 		String film = "";
-		film = film + title + ", " + director + ", " + year;
+		film = film + title + ", " + director + ", " + year + ", " + status;
 		return film;
+	}
+	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getTitle() {
@@ -70,4 +72,7 @@ public class Film {
 	public void setStatus(FilmStatus status) {
 		this.status = status;
 	}
+
+	
+	
 }
