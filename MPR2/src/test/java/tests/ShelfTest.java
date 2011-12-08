@@ -1,4 +1,4 @@
-package com.tests;
+package tests;
 
 import static org.junit.Assert.*;
 
@@ -11,9 +11,17 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.project.exceptions.*;
-import com.project.films.*;
-import com.project.statuses.FilmStatus;
+import project.Film;
+import project.Location;
+import project.Shelf;
+import statuses.FilmStatus;
+
+import exceptions.*;
+
+
+import exceptions.EndOfShelfException;
+import exceptions.FilmNotFoundException;
+import exceptions.LocationIsNullException;
 
 
 

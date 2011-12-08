@@ -1,4 +1,4 @@
-package com.project.films;
+package project;
 
 import java.util.ArrayList;
 
@@ -9,12 +9,15 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.project.events.FilmEvent;
-import com.project.events.FilmListener;
-import com.project.exceptions.EndOfShelfException;
-import com.project.exceptions.FilmNotFoundException;
-import com.project.exceptions.LocationIsNullException;
-import com.project.statuses.FilmStatus;
+import statuses.FilmStatus;
+
+
+
+import events.FilmEvent;
+import events.FilmListener;
+import exceptions.EndOfShelfException;
+import exceptions.FilmNotFoundException;
+import exceptions.LocationIsNullException;
 
 
 

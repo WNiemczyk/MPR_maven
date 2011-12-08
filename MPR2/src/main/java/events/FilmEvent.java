@@ -1,9 +1,10 @@
-package com.project.events;
+package events;
 
 import java.util.EventObject;
 
-import com.project.films.Film;
-import com.project.films.Shelf;
+import project.Film;
+import project.Shelf;
+
 
 
 

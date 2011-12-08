@@ -1,9 +1,11 @@
-package com.services;
+package services;
 
 import java.sql.*;
 import java.util.*;
-import com.project.films.Film;
-import com.project.statuses.FilmStatus;
+
+import project.Film;
+import statuses.FilmStatus;
+
 
 public class FilmDBManager {
 
@@ -12,6 +14,8 @@ public class FilmDBManager {
 	private PreparedStatement addFilmStatement;
 	private PreparedStatement getFilmStatement;
 	private PreparedStatement deleteFilmStatement;
+	private PreparedStatement deleteAllFilmsStatement;
+	private PreparedStatement findFilmStatement;
 
 	public FilmDBManager() {
 
@@ -44,9 +48,13 @@ public class FilmDBManager {
 			getFilmStatement = connection
 					.prepareStatement("SELECT id, title, director, year, status FROM film");
 		
-			deleteFilmStatement = connection
+			deleteAllFilmsStatement = connection
 					.prepareStatement("DELETE FROM film");
 
+			findFilmStatement = connection.prepareStatement("SELECT id FROM Film WHERE title = ?");
+		
+			deleteFilmStatement = connection.prepareStatement("DELETE FROM Film WHERE id = ?");
+			
 		}
 
 		catch (SQLException e) {
@@ -75,7 +83,7 @@ public class FilmDBManager {
 
 	}
 
-	public void addFilms(List<Film> films) {
+	public void addListOfFilms(List<Film> films) {
 
 		for (Film f : films)
 			addFilm(f);
@@ -84,12 +92,23 @@ public class FilmDBManager {
 	
 	public int getIdFilmByTitle(String t) {
 
-		int id = 0;
-		List<Film> films = getAllFilms();
+		int foundedId = -1;
 		
+		try {
+			
+			findFilmStatement.setString(1, t);
+			ResultSet rs = findFilmStatement.executeQuery();
+			while(rs.next()){
+				
+				foundedId = rs.getInt("ID");
+				return foundedId;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
-		
-		return id;
+		return -1;
 	}
 
 	public List<Film> getAllFilms() {
@@ -125,11 +144,25 @@ public class FilmDBManager {
 		return films;
 	}
 
+	public void deleteFilm(int id){
+		
+		try {
+			
+			deleteFilmStatement.setInt(1, id);
+			deleteFilmStatement.executeUpdate();
+		
+		} 
+		
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void deleteAllFilms() {
 
 		try {
 
-			deleteFilmStatement.executeUpdate();
+			deleteAllFilmsStatement.executeUpdate();
 		}
 
 		catch (SQLException e) {

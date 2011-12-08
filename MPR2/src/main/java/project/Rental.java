@@ -1,4 +1,4 @@
-package com.project.films;
+package project;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -7,13 +7,16 @@ import java.util.Map;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.Logger;
 
-import com.project.events.FilmEvent;
-import com.project.events.FilmListener;
-import com.project.exceptions.EndOfShelfException;
-import com.project.exceptions.FilmNotFoundException;
-import com.project.exceptions.LocationIsNullException;
-import com.project.statuses.FilmStatus;
-import com.services.FilmDBManager;
+import services.FilmDBManager;
+import statuses.FilmStatus;
+
+
+
+import events.FilmEvent;
+import events.FilmListener;
+import exceptions.EndOfShelfException;
+import exceptions.FilmNotFoundException;
+import exceptions.LocationIsNullException;
 
 
 
@@ -151,14 +154,16 @@ public class Rental implements FilmListener{
 		films.add(new Film("Nóż w wodzie", "Roman Polański", 1961, FilmStatus.Available));
 	
 		FilmDBManager filmDBManager = new FilmDBManager();
-		filmDBManager.addFilms(films);
+		filmDBManager.addListOfFilms(films);
 	
 		
-		//filmDBManager.getIdFilmByTitle("Chinatown");
+		int i = filmDBManager.getIdFilmByTitle("Snatch");
 
+		System.out.println("\nId szukane: " + i);
 		
+		filmDBManager.deleteFilm(i);
 		
-		
+		System.out.println(films);
 		
 	}
 

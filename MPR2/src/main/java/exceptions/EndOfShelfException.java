@@ -1,4 +1,4 @@
-package com.project.exceptions;
+package exceptions;
 
 public class EndOfShelfException extends Exception {
 
