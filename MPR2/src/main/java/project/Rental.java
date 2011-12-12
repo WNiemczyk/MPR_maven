@@ -164,10 +164,21 @@ public class Rental implements FilmListener{
 		filmDBManager.deleteFilm(i);
 		
 		System.out.println(films);
+	
+		
+		int y = 1961;
+		System.out.println("\nId filmu z roku: " + y + " to: " + filmDBManager.getIdFilmByYear(y));
+		
 		
 	}
 
 
+	
+	
+	
+	
+	
+	
 	public void filmBorrowed(FilmEvent event) {
 		event.getFilm().setStatus(FilmStatus.Available);
 		System.out.println("Borrowed film: " + event.getFilm().getTitle());		

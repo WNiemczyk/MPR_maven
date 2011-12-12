@@ -268,7 +268,7 @@ public class Shelf {
 			}
 
 			if (film == null)
-				throw new FilmNotFoundException("There is not film with title"
+				throw new FilmNotFoundException("There is not film with title "
 						+ film.getTitle());
 		}
 

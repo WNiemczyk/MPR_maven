@@ -8,15 +8,17 @@ import statuses.FilmStatus;
 
 
 public class FilmDBManager {
-
+	
 	private Connection connection;
 	private Statement statement;
 	private PreparedStatement addFilmStatement;
 	private PreparedStatement getFilmStatement;
 	private PreparedStatement deleteFilmStatement;
 	private PreparedStatement deleteAllFilmsStatement;
-	private PreparedStatement findFilmStatement;
-
+	private PreparedStatement findFilmStatementByTitle;
+	private PreparedStatement findFilmStatementByDirector;
+	private PreparedStatement findFilmStatementByYear;
+	
 	public FilmDBManager() {
 
 		try {
@@ -51,9 +53,15 @@ public class FilmDBManager {
 			deleteAllFilmsStatement = connection
 					.prepareStatement("DELETE FROM film");
 
-			findFilmStatement = connection.prepareStatement("SELECT id FROM Film WHERE title = ?");
+			findFilmStatementByTitle = connection.prepareStatement("SELECT id FROM Film WHERE title = ?");
+			
+			findFilmStatementByDirector = connection.prepareStatement("SELECT id FROM Film WHERE director = ?");
+			
+			findFilmStatementByYear = connection.prepareStatement("SELECT id FROM Film WHERE year = ?");
 		
 			deleteFilmStatement = connection.prepareStatement("DELETE FROM Film WHERE id = ?");
+			
+			
 			
 		}
 
@@ -96,8 +104,8 @@ public class FilmDBManager {
 		
 		try {
 			
-			findFilmStatement.setString(1, t);
-			ResultSet rs = findFilmStatement.executeQuery();
+			findFilmStatementByTitle.setString(1, t);
+			ResultSet rs = findFilmStatementByTitle.executeQuery();
 			while(rs.next()){
 				
 				foundedId = rs.getInt("ID");
@@ -111,6 +119,47 @@ public class FilmDBManager {
 		return -1;
 	}
 
+	public List<Integer> getIdFilmByDirector(String d){
+		
+		List<Integer> foundedIds = new ArrayList<Integer>();
+		
+		try {
+			findFilmStatementByDirector.setString(1, d);
+			ResultSet rs = findFilmStatementByDirector.executeQuery();
+			while(rs.next()){
+					foundedIds.add(rs.getInt("ID"));
+			}
+			return foundedIds;
+			
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	public List<Integer> getIdFilmByYear(int y) {
+
+		List<Integer> foundedIds = new ArrayList<Integer>();
+		
+		try {
+			
+			findFilmStatementByYear.setInt(1, y);
+			ResultSet rs = findFilmStatementByYear.executeQuery();
+			while(rs.next()){
+				
+				foundedIds.add(rs.getInt("ID"));
+				return foundedIds;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 	public List<Film> getAllFilms() {
 
 		List<Film> films = new ArrayList<Film>();
@@ -148,7 +197,7 @@ public class FilmDBManager {
 		
 		try {
 			
-			deleteFilmStatement.setInt(1, id);
+			deleteFilmStatement.setInt(1, id); // w miejsce ? wstawia zmienną (tutaj id)
 			deleteFilmStatement.executeUpdate();
 		
 		} 
