@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.Logger;
 
+import services.DirectorDBManager;
 import services.FilmDBManager;
 import statuses.FilmStatus;
 
@@ -156,6 +157,17 @@ public class Rental implements FilmListener{
 		FilmDBManager filmDBManager = new FilmDBManager();
 		filmDBManager.addListOfFilms(films);
 	
+		List<Director> directors = new ArrayList<Director>();
+		directors.add(new Director("Roman", "Polański", "France", 1933));
+		directors.add(new Director("Martin", "Scorsese", "USA", 1942));
+		directors.add(new Director("Guy", "Ritchie", "Great Britain", 1968));
+		directors.add(new Director("Susanne", "Bier", "Denmark", 1960));
+		directors.add(new Director("Alex", "de la Iglesia", "Spain", 1965));
+		
+		DirectorDBManager directorDBManager = new DirectorDBManager();
+		directorDBManager.addListOfDirectors(directors);
+		
+		
 		
 		int i = filmDBManager.getIdFilmByTitle("Snatch");
 
@@ -168,6 +180,8 @@ public class Rental implements FilmListener{
 		
 		int y = 1961;
 		System.out.println("\nId filmu z roku: " + y + " to: " + filmDBManager.getIdFilmByYear(y));
+		
+		
 		
 		
 	}
