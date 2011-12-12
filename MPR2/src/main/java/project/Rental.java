@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 
 import services.DirectorDBManager;
 import services.FilmDBManager;
+import services.Film_DirectorDBManager;
 import statuses.FilmStatus;
 
 
@@ -167,6 +168,8 @@ public class Rental implements FilmListener{
 		DirectorDBManager directorDBManager = new DirectorDBManager();
 		directorDBManager.addListOfDirectors(directors);
 		
+		Film_DirectorDBManager film_directorDBManager = new Film_DirectorDBManager();
+		film_directorDBManager.addFilm_Director(new Film("Chinatown", "Roman Polański", 1974, FilmStatus.Available), new Director("Roman", "Polański", "France", 1933));
 		
 		
 		int i = filmDBManager.getIdFilmByTitle("Snatch");
