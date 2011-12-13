@@ -9,9 +9,11 @@ public class Film_Director {
 		
 	}
 	
-	public Film_Director(int id_f, int id_d){
-		this.id_film = id_f;
-		this.id_director = id_d;
+	public Film_Director(int filmId, int directorId){
+		
+		this.id_film = filmId;
+		this.id_director = directorId;
+		
 	}
 
 	public int getId_film() {
@@ -29,5 +31,6 @@ public class Film_Director {
 	public void setId_director(int id_director) {
 		this.id_director = id_director;
 	}
+
 	
 }
