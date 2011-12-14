@@ -168,11 +168,22 @@ public class RentalMain implements FilmListener {
 		DirectorDBManager directorDBManager = new DirectorDBManager();
 		directorDBManager.addListOfDirectors(directors);
 
+	
 		
 		Film_DirectorDBManager fdDBManager = new Film_DirectorDBManager();
-		fdDBManager.addFilm_Director(new Film("Chinatown",
-				"Roman Polański", 1974, FilmStatus.Available), new Director(
+		fdDBManager.addFilm_Director(new Film("Nóż w wodzie", "Roman Polański", 1961,
+				FilmStatus.Available), new Director(
 				"Roman", "Polański", "France", 1933));
+		
+		Film f = new Film("Chinatown",
+				"Roman Polański", 1974, FilmStatus.Available);
+		
+		/*
+		String title = f.getTitle();
+		int t = filmDBManager.getIdFilmByTitle(title);
+		
+		System.out.println("Szukane id filmByTitle() : " + t);
+		*/
 		
 		
 		int i = filmDBManager.getIdFilmByTitle("Snatch");

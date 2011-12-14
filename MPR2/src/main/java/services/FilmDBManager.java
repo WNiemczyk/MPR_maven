@@ -1,5 +1,6 @@
 package services;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 
@@ -22,9 +23,17 @@ public class FilmDBManager {
 	public FilmDBManager() {
 
 		try {
+			
+			Properties props = new Properties();
 
-			connection = DriverManager
-					.getConnection("jdbc:hsqldb:hsql://localhost/workdb");
+			try {
+			props.load(ClassLoader.getSystemResourceAsStream("jdbc.properties"));
+			} catch (IOException e) {
+			e.printStackTrace();
+			}
+
+			connection = DriverManager.getConnection(props.getProperty("url"));
+
 
 			statement = connection.createStatement();
 			boolean filmTableExists = false;

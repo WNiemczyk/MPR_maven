@@ -43,12 +43,6 @@ public class Film_DirectorDBManager {
 						.executeUpdate("CREATE TABLE Film_Director(id_film int, id_director int, PRIMARY KEY (id_film, id_director), FOREIGN KEY (id_film) REFERENCES film (id),  FOREIGN KEY (id_director) REFERENCES director (id))");
 				//CONSTRAIN id_film_fk FOREIGN KEY id_film REFERENCES film(id), CONSTRAIN id_director_fk FOREIGN KEY id_director REFERENCES director(id)
 
-				/*
-				 AuthID SMALLINT NOT NULL,
-				    ->    BookID SMALLINT NOT NULL,
-				    ->    PRIMARY KEY (AuthID, BookID), FOREIGN KEY (AuthID) REFERENCES Authors (AuthID),  FOREIGN KEY (BookID) REFERENCES Books (BookID)
-				   
-				*/
 				
 			}
 		
