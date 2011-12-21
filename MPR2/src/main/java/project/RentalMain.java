@@ -146,6 +146,8 @@ public class RentalMain implements FilmListener {
 		shelf.clearAll();
 		shelf.show();
 
+//------D A T A B A S E----------------------------------------------------------------------//
+		
 		List<Film> films = new ArrayList<Film>();
 		films.add(new Film("Chinatown", "Roman Polański", 1974,
 				FilmStatus.Available));
@@ -167,14 +169,33 @@ public class RentalMain implements FilmListener {
 
 		DirectorDBManager directorDBManager = new DirectorDBManager();
 		directorDBManager.addListOfDirectors(directors);
-
 		
 		Film_DirectorDBManager fdDBManager = new Film_DirectorDBManager();
-		fdDBManager.addFilm_Director(new Film("Chinatown",
-				"Roman Polański", 1974, FilmStatus.Available), new Director(
+		fdDBManager.addFilm_Director(new Film("Nóż w wodzie", "Roman Polański", 1961,
+				FilmStatus.Available), new Director(
 				"Roman", "Polański", "France", 1933));
+
+		
+		// SELECT title FROM film, film_director WHERE id_director =2 and id_film = film.id
+		
+		//SELECT title, name, surname FROM film INNER JOIN film_director ON (film.id=film_director.id_film) INNER JOIN director ON (film_director.id_director=director.id) WHERE countryofbirth LIKE '%France%'
+		
+		/*
+		fdDBManager.addListFilm_Director(filmDBManager.getListIdFilm(), directorDBManager.getListIdDirector());
+		*/
 		
 		
+		//Film f = new Film("Chinatown",
+		//		"Roman Polański", 1974, FilmStatus.Available);
+		
+		/*
+		String title = f.getTitle();
+		int t = filmDBManager.getIdFilmByTitle(title);
+		
+		System.out.println("Szukane id filmByTitle() : " + t);
+		*/
+		
+		/*
 		int i = filmDBManager.getIdFilmByTitle("Snatch");
 
 		System.out.println("\nId szukane: " + i);
@@ -187,13 +208,16 @@ public class RentalMain implements FilmListener {
 		System.out.println("\nId filmu z roku: " + y + " to: "
 				+ filmDBManager.getIdFilmByYear(y));
 
+		 */
 	}
 
+	// metoda anonimowa, gdy rzadko używamy instancji klasy
+	// liczby.wypiszLiczby(new Warunek() {argument});
+	// zastosować w kodzie
 	
 	
 	
-	
-	
+	//------E V E N T S------------------------------------------------------------------------//
 	
 	public void filmBorrowed(FilmEvent event) {
 		event.getFilm().setStatus(FilmStatus.Available);

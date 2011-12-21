@@ -1,5 +1,6 @@
 package services;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 import java.sql.ResultSet;
@@ -12,6 +13,7 @@ public class DirectorDBManager {
 		private Statement statement;
 		private PreparedStatement addDirectorStatement;
 		private PreparedStatement getDirectorStatement;
+		private PreparedStatement findDirectorStatement;
 		private PreparedStatement findDirectorStatementByTitle;
 		private PreparedStatement deleteDirectorStatement;
 		private PreparedStatement deleteAllDirectorsStatement;
@@ -19,10 +21,22 @@ public class DirectorDBManager {
 		
 		public DirectorDBManager() {
 
-			try {
+				try {
+				
+				Properties props = new Properties();
 
-				connection = DriverManager
-						.getConnection("jdbc:hsqldb:hsql://localhost/workdb");
+				try {
+				props.load(ClassLoader.getSystemResourceAsStream("jdbc.properties"));
+				} 
+				
+				catch (IOException e) {
+					
+				e.printStackTrace();
+				
+				}
+			
+				connection = DriverManager.getConnection(props.getProperty("url"));
+
 
 				statement = connection.createStatement();
 				boolean directorTableExists = false;
@@ -48,6 +62,8 @@ public class DirectorDBManager {
 				getDirectorStatement = connection
 						.prepareStatement("SELECT id, name, surname, countryOfBirth, yearOfBirth FROM director");
 			
+				findDirectorStatement = connection.prepareStatement("SELECT id FROM director");
+				
 				findDirectorStatementByTitle = connection.prepareStatement("SELECT id FROM director WHERE surname = ?");
 				
 				deleteAllDirectorsStatement = connection
@@ -119,6 +135,27 @@ public class DirectorDBManager {
 			return null;
 		}
 		
+		public List<Integer> getListIdDirector(){
+			
+			List<Integer> foundedIds = new ArrayList<Integer>();
+			
+			try {
+				ResultSet rs = findDirectorStatement.executeQuery();
+				while(rs.next())
+					foundedIds.add(rs.getInt("ID"));
+				
+				return foundedIds;
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			
+			return null;
+		}
+		
+		
+		
 		public int getIdDirectorBySurname(String s) {
 
 			int foundedId = -1;
@@ -141,6 +178,27 @@ public class DirectorDBManager {
 		}
 		
 
+		public List<Integer> getListIdDirectorBySurname(String s) {
+
+			List<Integer> foundedIds = new ArrayList<Integer>();
+			
+			try {
+				
+				findDirectorStatementByTitle.setString(1, s);
+				ResultSet rs = findDirectorStatementByTitle.executeQuery();
+				while(rs.next()){
+					
+					foundedIds.add(rs.getInt("ID"));
+					return foundedIds;
+				}
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			return null;
+		}
+		
 		public void deleteDirector(int id){
 			
 			try {

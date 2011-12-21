@@ -1,5 +1,6 @@
 package services;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 import java.sql.ResultSet;
@@ -19,10 +20,22 @@ public class Film_DirectorDBManager {
 
 	public Film_DirectorDBManager() {
 
-		try {
+try {
+			
+			Properties props = new Properties();
 
-			connection = DriverManager
-					.getConnection("jdbc:hsqldb:hsql://localhost/workdb");
+			try {
+			props.load(ClassLoader.getSystemResourceAsStream("jdbc.properties"));
+			} 
+			
+			catch (IOException e) {
+				
+			e.printStackTrace();
+			
+			}
+			
+			connection = DriverManager.getConnection(props.getProperty("url"));
+
 
 			statement = connection.createStatement();
 			boolean Film_DirectorTableExists = false;
@@ -43,12 +56,6 @@ public class Film_DirectorDBManager {
 						.executeUpdate("CREATE TABLE Film_Director(id_film int, id_director int, PRIMARY KEY (id_film, id_director), FOREIGN KEY (id_film) REFERENCES film (id),  FOREIGN KEY (id_director) REFERENCES director (id))");
 				//CONSTRAIN id_film_fk FOREIGN KEY id_film REFERENCES film(id), CONSTRAIN id_director_fk FOREIGN KEY id_director REFERENCES director(id)
 
-				/*
-				 AuthID SMALLINT NOT NULL,
-				    ->    BookID SMALLINT NOT NULL,
-				    ->    PRIMARY KEY (AuthID, BookID), FOREIGN KEY (AuthID) REFERENCES Authors (AuthID),  FOREIGN KEY (BookID) REFERENCES Books (BookID)
-				   
-				*/
 				
 			}
 		
@@ -58,8 +65,8 @@ public class Film_DirectorDBManager {
 			getFilm_DirectorStatement = connection
 					.prepareStatement("SELECT id_film, id_director FROM Film_Director");
 
-			deleteFilm_DirectorStatement = connection
-					.prepareStatement("DELETE FROM Film_Director WHERE id_film = ? AND id_director = ?");
+			//deleteFilm_DirectorStatement = connection
+				//	.prepareStatement("DELETE FROM Film_Director WHERE id_film = ? AND id_director = ?");
 
 			deleteAllFilm_DirectorsStatement = connection
 					.prepareStatement("DELETE FROM Film_Director");
@@ -95,6 +102,28 @@ public class Film_DirectorDBManager {
 
 	}
 
+	public void addListFilm_Director(List<Integer> f, List<Integer> d) {
+		
+		try {
+
+			for(Integer filmId : f){
+				for(Integer directorId : d){
+					
+					addFilm_DirectorStatement.setInt(1, filmId);
+					addFilm_DirectorStatement.setInt(2, directorId);
+					addFilm_DirectorStatement.executeUpdate();
+					
+				}
+			}
+		}
+		
+		catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+
+	}
+	
 	public List<Film_Director> getAllFilm_Directors() {
 
 		List<Film_Director> film_directors = new ArrayList<Film_Director>();
