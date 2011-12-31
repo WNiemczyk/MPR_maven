@@ -15,6 +15,7 @@ public class Film_DirectorDBManager {
 	private Statement statement;
 	private PreparedStatement addFilm_DirectorStatement;
 	private PreparedStatement getFilm_DirectorStatement;
+	private PreparedStatement deleteAllFilmByDirectorStatement;
 	private PreparedStatement deleteFilm_DirectorStatement;
 	private PreparedStatement deleteAllFilm_DirectorsStatement;
 

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 
+import project.FilmCondition;
 import project.Film;
 import statuses.FilmStatus;
 
@@ -65,10 +66,10 @@ public class FilmDBManager {
 
 			deleteAllFilmsStatement = connection
 					.prepareStatement("DELETE FROM film");
-			
+
 			findFilmStatement = connection
 					.prepareStatement("SELECT id FROM Film");
-			
+
 			findFilmStatementByTitle = connection
 					.prepareStatement("SELECT id FROM Film WHERE title = ?");
 
@@ -115,25 +116,24 @@ public class FilmDBManager {
 			addFilm(f);
 	}
 
-	public List<Integer> getListIdFilm(){
-		
+	public List<Integer> getListIdFilm() {
+
 		List<Integer> foundedIds = new ArrayList<Integer>();
-		
+
 		try {
 			ResultSet rs = findFilmStatement.executeQuery();
-			while(rs.next())
+			while (rs.next())
 				foundedIds.add(rs.getInt("ID"));
-			
+
 			return foundedIds;
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		
+
 		return null;
 	}
-	
+
 	public int getIdFilmByTitle(String t) {
 
 		int foundedId = -1;
@@ -155,8 +155,8 @@ public class FilmDBManager {
 		return -1;
 	}
 
-	public List<Integer> getListIdFilmByTitle(String t) {
-
+	public List<Integer> getLIdFilmByTitle(String t) {
+	
 		List<Integer> foundedIds = new ArrayList<Integer>();
 
 		try {
@@ -174,7 +174,41 @@ public class FilmDBManager {
 
 		return null;
 	}
+		
+	public List<Integer> getListIdFilmByTitle(String t) {
 
+		List<Integer> foundedIds = new ArrayList<Integer>();
+
+		try {
+			findFilmStatementByTitle.setString(1, t);
+			ResultSet rs = findFilmStatementByTitle.executeQuery();
+			
+			while (rs.next()) {
+				
+				foundedIds.add(rs.getInt("ID"));
+			}
+			return foundedIds;
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public void addCondition2(FilmDBManagerCondition fc){
+	List<Integer> fIds = getListIdFilmByDirector("Roman Polański");
+	for(Integer i : fIds){
+		//iterator dodać
+		if (fc.getCondition(i)){
+			System.out.println("Reżyser ma więcej niż " + i + " filmy na koncie.");
+		}
+
+	}
+	
+	}
+	
 	public List<Integer> getListIdFilmByDirector(String d) {
 
 		List<Integer> foundedIds = new ArrayList<Integer>();
@@ -206,8 +240,8 @@ public class FilmDBManager {
 			while (rs.next()) {
 
 				foundedIds.add(rs.getInt("ID"));
-				return foundedIds;
 			}
+			return foundedIds;
 
 		} catch (SQLException e) {
 			e.printStackTrace();

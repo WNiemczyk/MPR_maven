@@ -1,5 +1,6 @@
 package project;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import services.DirectorDBManager;
 import services.FilmDBManager;
+import services.FilmDBManagerCondition;
 import services.Film_DirectorDBManager;
 import statuses.FilmStatus;
 
@@ -146,19 +148,36 @@ public class RentalMain implements FilmListener {
 		shelf.clearAll();
 		shelf.show();
 
-//------D A T A B A S E----------------------------------------------------------------------//
 		
-		List<Film> films = new ArrayList<Film>();
-		films.add(new Film("Chinatown", "Roman Polański", 1974,
-				FilmStatus.Available));
-		films.add(new Film("Taxi Driver", "Martin Scorsese", 1976,
-				FilmStatus.Available));
-		films.add(new Film("Snatch", "Guy Ritchie", 2000, FilmStatus.Available));
-		films.add(new Film("Nóż w wodzie", "Roman Polański", 1961,
-				FilmStatus.Available));
+		// ------D A T A B A S E--------------------------------------------------------//
 
+		final String director = "Roman Polański";
+		
+		Film f = new Film();
+		f.addCondition(new FilmCondition() {
+
+			public boolean getCondition(Film f) {
+				if (f.getDirector().equals(director))
+					return true;
+				return false;
+			}
+
+		});
+	
+		f.addCondition(new FilmCondition() {
+			
+			public boolean getCondition(Film f) {
+				if(f.getYear() == 1976)
+					return true;
+				return false;
+			}
+		});
+
+		// fdDBManager.deleteAllFilm_Directors();
 		FilmDBManager filmDBManager = new FilmDBManager();
-		filmDBManager.addListOfFilms(films);
+		filmDBManager.addListOfFilms(f.init());
+		// filmDBManager.deleteAllFilms();
+		// filmDBManager.addListOfFilms(films);
 
 		List<Director> directors = new ArrayList<Director>();
 		directors.add(new Director("Roman", "Polański", "France", 1933));
@@ -168,57 +187,74 @@ public class RentalMain implements FilmListener {
 		directors.add(new Director("Alex", "de la Iglesia", "Spain", 1965));
 
 		DirectorDBManager directorDBManager = new DirectorDBManager();
+		// directorDBManager.deleteAllDirectors();
 		directorDBManager.addListOfDirectors(directors);
-		
+
 		Film_DirectorDBManager fdDBManager = new Film_DirectorDBManager();
-		fdDBManager.addFilm_Director(new Film("Nóż w wodzie", "Roman Polański", 1961,
-				FilmStatus.Available), new Director(
-				"Roman", "Polański", "France", 1933));
 
-		
-		// SELECT title FROM film, film_director WHERE id_director =2 and id_film = film.id
-		
-		//SELECT title, name, surname FROM film INNER JOIN film_director ON (film.id=film_director.id_film) INNER JOIN director ON (film_director.id_director=director.id) WHERE countryofbirth LIKE '%France%'
-		
+
+		filmDBManager.addCondition2(new FilmDBManagerCondition() {
+
+			public boolean getCondition(Integer i) {
+				if (i > 1)
+					return true;
+				return false;
+
+			}
+		});
+
+		System.out.println("List of id_director: "
+				+ filmDBManager.getListIdFilmByDirector("Roman Polański")); // 0,
+																			// 3
+		System.out.println("\n\nList of id_film: "
+				+ directorDBManager.getListIdDirectorBySurname("Polański")); // 0
+
+		fdDBManager.addListFilm_Director(
+				filmDBManager.getListIdFilmByDirector("Roman Polański"),
+				directorDBManager.getListIdDirectorBySurname("Polański"));
+
 		/*
-		fdDBManager.addListFilm_Director(filmDBManager.getListIdFilm(), directorDBManager.getListIdDirector());
-		*/
-		
-		
-		//Film f = new Film("Chinatown",
-		//		"Roman Polański", 1974, FilmStatus.Available);
-		
+		 * fdDBManager.addFilm_Director(new Film("Nóż w wodzie",
+		 * "Roman Polański", 1961, FilmStatus.Available), new Director( "Roman",
+		 * "Polański", "France", 1933));
+		 */
+
+		// SELECT title FROM film, film_director WHERE id_director =2 and
+		// id_film = film.id
+
+		// SELECT title, name, surname FROM film INNER JOIN film_director ON
+		// (film.id=film_director.id_film) INNER JOIN director ON
+		// (film_director.id_director=director.id) WHERE countryofbirth LIKE
+		// '%France%'
+
+		// Film f = new Film("Chinatown",
+		// "Roman Polański", 1974, FilmStatus.Available);
+
 		/*
-		String title = f.getTitle();
-		int t = filmDBManager.getIdFilmByTitle(title);
-		
-		System.out.println("Szukane id filmByTitle() : " + t);
-		*/
-		
+		 * String title = f.getTitle(); int t =
+		 * filmDBManager.getIdFilmByTitle(title);
+		 * 
+		 * System.out.println("Szukane id filmByTitle() : " + t);
+		 */
+
 		/*
-		int i = filmDBManager.getIdFilmByTitle("Snatch");
-
-		System.out.println("\nId szukane: " + i);
-
-		filmDBManager.deleteFilm(i);
-
-		System.out.println(films);
-
-		int y = 1961;
-		System.out.println("\nId filmu z roku: " + y + " to: "
-				+ filmDBManager.getIdFilmByYear(y));
-
+		 * int i = filmDBManager.getIdFilmByTitle("Snatch");
+		 * 
+		 * System.out.println("\nId szukane: " + i);
+		 * 
+		 * filmDBManager.deleteFilm(i);
+		 * 
+		 * System.out.println(films);
+		 * 
+		 * int y = 1961; System.out.println("\nId filmu z roku: " + y + " to: "
+		 * + filmDBManager.getIdFilmByYear(y));
 		 */
 	}
+	
+	
 
-	// metoda anonimowa, gdy rzadko używamy instancji klasy
-	// liczby.wypiszLiczby(new Warunek() {argument});
-	// zastosować w kodzie
-	
-	
-	
-	//------E V E N T S------------------------------------------------------------------------//
-	
+	// ------E V E N T S----------------------------------------------------------------------//
+
 	public void filmBorrowed(FilmEvent event) {
 		event.getFilm().setStatus(FilmStatus.Available);
 		System.out.println("Borrowed film: " + event.getFilm().getTitle());

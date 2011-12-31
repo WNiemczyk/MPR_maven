@@ -14,7 +14,7 @@ public class DirectorDBManager {
 		private PreparedStatement addDirectorStatement;
 		private PreparedStatement getDirectorStatement;
 		private PreparedStatement findDirectorStatement;
-		private PreparedStatement findDirectorStatementByTitle;
+		private PreparedStatement findDirectorStatementBySurname;
 		private PreparedStatement deleteDirectorStatement;
 		private PreparedStatement deleteAllDirectorsStatement;
 	
@@ -64,7 +64,7 @@ public class DirectorDBManager {
 			
 				findDirectorStatement = connection.prepareStatement("SELECT id FROM director");
 				
-				findDirectorStatementByTitle = connection.prepareStatement("SELECT id FROM director WHERE surname = ?");
+				findDirectorStatementBySurname = connection.prepareStatement("SELECT id FROM director WHERE surname = ?");
 				
 				deleteAllDirectorsStatement = connection
 						.prepareStatement("DELETE FROM director");
@@ -162,8 +162,8 @@ public class DirectorDBManager {
 			
 			try {
 				
-				findDirectorStatementByTitle.setString(1, s);
-				ResultSet rs = findDirectorStatementByTitle.executeQuery();
+				findDirectorStatementBySurname.setString(1, s);
+				ResultSet rs = findDirectorStatementBySurname.executeQuery();
 				while(rs.next()){
 					
 					foundedId = rs.getInt("ID");
@@ -184,8 +184,8 @@ public class DirectorDBManager {
 			
 			try {
 				
-				findDirectorStatementByTitle.setString(1, s);
-				ResultSet rs = findDirectorStatementByTitle.executeQuery();
+				findDirectorStatementBySurname.setString(1, s);
+				ResultSet rs = findDirectorStatementBySurname.executeQuery();
 				while(rs.next()){
 					
 					foundedIds.add(rs.getInt("ID"));
