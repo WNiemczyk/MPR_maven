@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 
-import project.FilmCondition;
 import project.Film;
 import statuses.FilmStatus;
 
@@ -81,6 +80,8 @@ public class FilmDBManager {
 
 			deleteFilmStatement = connection
 					.prepareStatement("DELETE FROM Film WHERE id = ?");
+			
+			deleteAllFilmsStatement = connection.prepareStatement("DELETE FROM Film");
 
 		}
 
@@ -155,26 +156,7 @@ public class FilmDBManager {
 		return -1;
 	}
 
-	public List<Integer> getLIdFilmByTitle(String t) {
-	
-		List<Integer> foundedIds = new ArrayList<Integer>();
 
-		try {
-			findFilmStatementByTitle.setString(1, t);
-			ResultSet rs = findFilmStatementByTitle.executeQuery();
-			while (rs.next()) {
-				foundedIds.add(rs.getInt("ID"));
-			}
-			return foundedIds;
-
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-		
 	public List<Integer> getListIdFilmByTitle(String t) {
 
 		List<Integer> foundedIds = new ArrayList<Integer>();
@@ -182,9 +164,9 @@ public class FilmDBManager {
 		try {
 			findFilmStatementByTitle.setString(1, t);
 			ResultSet rs = findFilmStatementByTitle.executeQuery();
-			
+
 			while (rs.next()) {
-				
+
 				foundedIds.add(rs.getInt("ID"));
 			}
 			return foundedIds;
@@ -197,18 +179,17 @@ public class FilmDBManager {
 		return null;
 	}
 
-	public void addCondition2(FilmDBManagerCondition fc){
-	List<Integer> fIds = getListIdFilmByDirector("Roman Polański");
-	for(Integer i : fIds){
-		//iterator dodać
-		if (fc.getCondition(i)){
-			System.out.println("Reżyser ma więcej niż " + i + " filmy na koncie.");
+	public void addCondition(String d, FilmDBManagerCondition fc) {
+		List<Integer> ids = getListIdFilmByDirector(d);
+		for (Integer i : ids) {
+			if (fc.getCondition(i)) {
+				System.out.println("Counter for director " + d + " who has more than one film in database.");
+			}
+
 		}
 
 	}
-	
-	}
-	
+
 	public List<Integer> getListIdFilmByDirector(String d) {
 
 		List<Integer> foundedIds = new ArrayList<Integer>();

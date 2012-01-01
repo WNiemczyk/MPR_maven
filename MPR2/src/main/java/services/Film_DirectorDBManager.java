@@ -21,22 +21,22 @@ public class Film_DirectorDBManager {
 
 	public Film_DirectorDBManager() {
 
-try {
-			
+		try {
+
 			Properties props = new Properties();
 
 			try {
-			props.load(ClassLoader.getSystemResourceAsStream("jdbc.properties"));
-			} 
-			
-			catch (IOException e) {
-				
-			e.printStackTrace();
-			
+				props.load(ClassLoader
+						.getSystemResourceAsStream("jdbc.properties"));
 			}
-			
-			connection = DriverManager.getConnection(props.getProperty("url"));
 
+			catch (IOException e) {
+
+				e.printStackTrace();
+
+			}
+
+			connection = DriverManager.getConnection(props.getProperty("url"));
 
 			statement = connection.createStatement();
 			boolean Film_DirectorTableExists = false;
@@ -55,19 +55,23 @@ try {
 			if (!Film_DirectorTableExists) {
 				statement
 						.executeUpdate("CREATE TABLE Film_Director(id_film int, id_director int, PRIMARY KEY (id_film, id_director), FOREIGN KEY (id_film) REFERENCES film (id),  FOREIGN KEY (id_director) REFERENCES director (id))");
-				//CONSTRAIN id_film_fk FOREIGN KEY id_film REFERENCES film(id), CONSTRAIN id_director_fk FOREIGN KEY id_director REFERENCES director(id)
+				// CONSTRAIN id_film_fk FOREIGN KEY id_film REFERENCES film(id),
+				// CONSTRAIN id_director_fk FOREIGN KEY id_director REFERENCES
+				// director(id)
 
-				
 			}
-		
+
 			addFilm_DirectorStatement = connection
 					.prepareStatement("INSERT INTO Film_Director (id_film, id_director) VALUES (?, ?)");
 
+			
 			getFilm_DirectorStatement = connection
 					.prepareStatement("SELECT id_film, id_director FROM Film_Director");
-
-			//deleteFilm_DirectorStatement = connection
-				//	.prepareStatement("DELETE FROM Film_Director WHERE id_film = ? AND id_director = ?");
+			
+			
+			//getFilm_DirectorStatement = connection.prepareStatement("SELECT Film.title, Film.director, Film.year, Film.status FROM Film, Film_Director WHERE id_director = ? AND id_film = Film.id");
+			
+			deleteAllFilmByDirectorStatement = connection.prepareStatement("DELETE FROM Film_Director WHERE id_director = ?");
 
 			deleteAllFilm_DirectorsStatement = connection
 					.prepareStatement("DELETE FROM Film_Director");
@@ -104,27 +108,27 @@ try {
 	}
 
 	public void addListFilm_Director(List<Integer> f, List<Integer> d) {
-		
+
 		try {
 
-			for(Integer filmId : f){
-				for(Integer directorId : d){
-					
+			for (Integer filmId : f) {
+				for (Integer directorId : d) {
+
 					addFilm_DirectorStatement.setInt(1, filmId);
 					addFilm_DirectorStatement.setInt(2, directorId);
 					addFilm_DirectorStatement.executeUpdate();
-					
+
 				}
 			}
 		}
-		
+
 		catch (SQLException e) {
 
 			e.printStackTrace();
 		}
 
 	}
-	
+
 	public List<Film_Director> getAllFilm_Directors() {
 
 		List<Film_Director> film_directors = new ArrayList<Film_Director>();
@@ -151,6 +155,7 @@ try {
 		return null;
 	}
 
+	/*
 	public void deleteFilm_Director(int id_f, int id_d) {
 
 		try {
@@ -166,6 +171,21 @@ try {
 		}
 	}
 
+	*/
+	
+	public void deleteFilm_Director(List<Integer> d) {
+
+		for(Integer id_d : d){
+			try {
+				deleteAllFilmByDirectorStatement.setInt(1, id_d);
+				deleteAllFilmByDirectorStatement.executeUpdate();
+			} 
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void deleteAllFilm_Directors() {
 
 		try {
