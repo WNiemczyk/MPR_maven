@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 
 import project.Director;
 
-public class DirectorDBManager {
+public class DBDirector {
 		
 		private Connection connection;
 		private Statement statement;
@@ -19,7 +19,7 @@ public class DirectorDBManager {
 		private PreparedStatement deleteAllDirectorsStatement;
 	
 		
-		public DirectorDBManager() {
+		public DBDirector() {
 
 				try {
 				

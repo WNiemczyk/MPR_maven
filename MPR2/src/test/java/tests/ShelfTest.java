@@ -2,7 +2,9 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.After;
@@ -11,6 +13,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import project.Director;
 import project.Film;
 import project.Location;
 import project.Shelf;
@@ -40,8 +43,11 @@ public class ShelfTest {
 	@Before
 	public void setUp() throws Exception {
 		
+		List<Director> directorsDzienSwira = new ArrayList<Director>();
+		directorsDzienSwira.add(new Director("Marek", "Koterski", "Poland", 1942));
+		
 		Location l = new Location(0, 0);
-		s.put(l, new Film("Dzień świra", "Marek Koterski", 2002, FilmStatus.Available));
+		s.put(l, new Film("Dzień świra", directorsDzienSwira, 2002, FilmStatus.Available));
 		
 	}
 
@@ -68,7 +74,10 @@ public class ShelfTest {
 	@Test
 	public void testPutFilm() throws LocationIsNullException, EndOfShelfException{
 		
-		s.put(new Film("Dzień świra", "Marek Koterski", 2002, FilmStatus.Available));		
+		List<Director> directorsDzienSwira = new ArrayList<Director>();
+		directorsDzienSwira.add(new Director("Marek", "Koterski", "Poland", 1942));
+		
+		s.put(new Film("Dzień świra", directorsDzienSwira, 2002, FilmStatus.Available));		
 		assertTrue(s.getExistedFilms().size() > 0);
 		
 	}
@@ -93,10 +102,18 @@ public class ShelfTest {
 	@Test
 	public void testChangeLocation() {
 		
+	
+		List<Director> directorsDzienSwira = new ArrayList<Director>();
+		directorsDzienSwira.add(new Director("Marek", "Koterski", "Poland", 1942));
+		
+		List<Director> directorsWszyscyJestesmyChrystusami = new ArrayList<Director>();
+		directorsWszyscyJestesmyChrystusami.add(new Director("Marek", "Koterski", "Poland", 1942));
+		
+		
 		Location l1 = new Location(0, 0);
 		Location l2 = new Location(0, 1);
-		s.put(l1, new Film("Dzień świra", "Marek Koterski", 2002, FilmStatus.Available));
-		s.put(l2, new Film("Wszyscy jesteśmy Chrystusami", "Marek Koterski", 2007, FilmStatus.Available));
+		s.put(l1, new Film("Dzień świra", directorsDzienSwira, 2002, FilmStatus.Available));
+		s.put(l2, new Film("Wszyscy jesteśmy Chrystusami", directorsWszyscyJestesmyChrystusami, 2007, FilmStatus.Available));
 		Film f1 = s.getExistedFilms().get(l1);
 		Film f2 = s.getExistedFilms().get(l2);
 		
@@ -124,11 +141,20 @@ public class ShelfTest {
 	@Test
 	public void testFindLocationByDirector() throws LocationIsNullException{
 		
+		List<Director> directorsDzienSwira = new ArrayList<Director>();
+		directorsDzienSwira.add(new Director("Marek", "Koterski", "Poland", 1942));
+		
 		Location l = new Location(0, 0);
-		Film f = new Film("Dzień świra", "Marek Koterski", 2002, FilmStatus.Available);
+		Film f = new Film("Dzień świra", directorsDzienSwira, 2002, FilmStatus.Available);
 		s.put(l, f);
 	
-		assertEquals(s.findLocationByDirector(f.getDirector()), l);
+		Film film = new Film();
+		String surname = null;
+		List<Director> directors = film.getDirectors();
+		for(Director d : directors)
+			surname = d.getSurname();
+		
+		assertEquals(s.findLocationByDirector(surname), l);
 		
 	}
 
@@ -142,9 +168,15 @@ public class ShelfTest {
 	@Test
 	public void testSetExistedFilms() {
 		
-		s.put(new Location(0, 0), new Film("Wszyscy jesteśmy Chrystusami", "Marek Koterski", 2007, FilmStatus.Available));
+		List<Director> directorsDzienSwira = new ArrayList<Director>();
+		directorsDzienSwira.add(new Director("Marek", "Koterski", "Poland", 1942));
+		
+		List<Director> directorsWszyscyJestesmyChrystusami = new ArrayList<Director>();
+		directorsWszyscyJestesmyChrystusami.add(new Director("Marek", "Koterski", "Poland", 1942));
+		
+		s.put(new Location(0, 0), new Film("Wszyscy jesteśmy Chrystusami", directorsDzienSwira, 2007, FilmStatus.Available));
 		Map<Location, Film> newFilm = new HashMap<Location, Film>();
-		newFilm.put(new Location(0, 0), new Film("Dzień świra", "Marek Koterski", 2002, FilmStatus.Available));
+		newFilm.put(new Location(0, 0), new Film("Dzień świra", directorsWszyscyJestesmyChrystusami, 2002, FilmStatus.Available));
 		s.setExistedFilms(newFilm);
 		
 		assertSame(s.getExistedFilms().get(new Location(0, 0)), newFilm.get(new Location(0, 0)));

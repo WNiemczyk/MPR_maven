@@ -39,17 +39,34 @@ public class Shelf {
 	}
 
 	public void init() {
+		
+
+		List<Director> directorsLaComunidad = new ArrayList<Director>();
+		directorsLaComunidad.add(new Director("Alex", "de la Iglesia", "Spain", 1965));
+		
+		List<Director> directorsSoulKitchen = new ArrayList<Director>();
+		directorsSoulKitchen.add(new Director("Fatih", "Akin", "Germany", 1973));
+		
+		List<Director> directorsTheLimitsOfControl = new ArrayList<Director>();
+		directorsTheLimitsOfControl.add(new Director("Jim", "Jarmusch", "USA", 1953));
+		
+		List<Director> directorsBrokenFlowers = new ArrayList<Director>();
+		directorsBrokenFlowers.add(new Director("Jim", "Jarmusch", "USA", 1953));
+		
+		List<Director> directorsDomZly = new ArrayList<Director>();
+		directorsDomZly.add(new Director("Wojciech", "Smarzowski", "Poland", 1963));
+		
 		this.existedFilms.put(new Location(0, 0), new Film("La Comunidad",
-				"de la Iglesia", 2004, FilmStatus.Available));
+				directorsLaComunidad, 2004, FilmStatus.Available));
 		this.existedFilms.put(new Location(1, 0), new Film("Soul Kitchen",
-				"Fatih Akin", 2010, FilmStatus.Available));
+				directorsSoulKitchen, 2010, FilmStatus.Available));
 		this.existedFilms.put(new Location(2, 0), new Film(
-				"The Limits of Control", "Jim Jarmusch", 2009,
+				"The Limits of Control", directorsTheLimitsOfControl, 2009,
 				FilmStatus.Available));
 		this.existedFilms.put(new Location(3, 0), new Film("Broken Flowers",
-				"Jim Jarmusch", 2005, FilmStatus.Available));
+				directorsBrokenFlowers, 2005, FilmStatus.Available));
 		this.existedFilms.put(new Location(4, 0), new Film("Dom zły",
-				"Wojciech Smarzowski", 2009, FilmStatus.Available));
+				directorsDomZly, 2009, FilmStatus.Available));
 
 	}
 
@@ -269,7 +286,7 @@ public class Shelf {
 
 			if (film == null)
 				throw new FilmNotFoundException("There is not film with title "
-						+ film.getTitle());
+						+ t);
 		}
 
 		logger.info("New film " + f + " is putted instead of film " + t);
@@ -329,7 +346,7 @@ public class Shelf {
 
 		for (Map.Entry<Location, Film> e : existedFilms.entrySet()) {
 
-			if (e.getValue().getDirector().contains(d))
+			if (e.getValue().getDirectors().contains(d))
 				foundedFilms.put(e.getKey(), e.getValue());
 		}
 
@@ -350,7 +367,7 @@ public class Shelf {
 
 		for (Map.Entry<Location, Film> e : existedFilms.entrySet()) {
 
-			if (e.getValue().getDirector().contains(d))
+			if (e.getValue().getDirectors().contains(d))
 				locations.add(e.getKey());
 		}
 
